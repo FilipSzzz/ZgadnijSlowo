@@ -1,0 +1,13 @@
+lekarz,
+prawnik,
+fryzjer,
+murarz,
+kelner,
+kucharz,
+trener,
+grafik,
+górnik,
+rolnik,
+malarz
+kurier,
+barman,

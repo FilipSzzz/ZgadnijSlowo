@@ -10,16 +10,15 @@ public class ZgadnijSlowo extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/startPanel.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/startPanel.fxml"));
         Parent root = loader.load();
+        primaryStage.setScene(new Scene(root, 600, 500));
 
-        Scene scene = new Scene(root, 600, 500);
-
-        primaryStage.setTitle("Zgadnij Slowo");
-        primaryStage.setScene(scene);
+        primaryStage.setTitle("Zgadnij Słowo");
         primaryStage.setResizable(false);
         primaryStage.show();
     }
+
 
     public static void main(String[] args) {
         launch(args);

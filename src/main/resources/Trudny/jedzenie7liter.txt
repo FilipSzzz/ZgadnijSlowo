@@ -1,0 +1,14 @@
+adwokat,
+bazylia,
+borówka,
+cukinia,
+cytryna,
+czosnek,
+gruszka,
+kasztan,
+limonka,
+marchew,
+oregano,
+papryka,
+pomidor
+awokado

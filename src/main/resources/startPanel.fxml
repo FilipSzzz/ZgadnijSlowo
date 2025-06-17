@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="500" prefWidth="600" spacing="20" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.zgadnij_slowo.ZgadnijSlowoController">
+<VBox alignment="CENTER" prefHeight="609.0" prefWidth="658.0" spacing="20" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.zgadnij_slowo.StartPanelController">
 
     <!-- Game Title -->
     <Label style="-fx-font-weight: bold;" text="ZGADNIJ SŁOWO">
@@ -17,15 +17,8 @@
         </font>
     </Label>
 
-    <!-- Game Description -->
-    <Label style="-fx-font-style: italic;" text="Odgadnij 5-literowe słowo w 6 próbach">
-        <font>
-            <Font name="Arial" size="16.0" />
-        </font>
-    </Label>
-
     <!-- Main Menu Container -->
-    <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #e6e6e6; -fx-padding: 30; -fx-background-radius: 10;">
+    <VBox fx:id="mainMenuContainer" alignment="CENTER" spacing="15" style="-fx-background-color: #e6e6e6; -fx-padding: 30; -fx-background-radius: 10;">
         <padding>
             <Insets bottom="20" left="40" right="40" top="20" />
         </padding>
@@ -52,6 +45,21 @@
             </ComboBox>
         </HBox>
 
+        <!-- Category Selection -->
+        <HBox alignment="CENTER" spacing="15">
+            <Label style="-fx-font-weight: bold;" text="Kategoria słów:">
+                <font>
+                    <Font name="Arial" size="14.0" />
+                </font>
+            </Label>
+            <ComboBox fx:id="categoryComboBox" prefWidth="150">
+                <style>
+                    -fx-font-size: 14px;
+                    -fx-background-radius: 5;
+                </style>
+            </ComboBox>
+        </HBox>
+
         <!-- Start Button -->
         <Button fx:id="startGameButton" prefHeight="50" prefWidth="200" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Rozpocznij grę">
             <font>
@@ -60,25 +68,41 @@
         </Button>
 
         <!-- Separator -->
-        <Label prefWidth="300" style="-fx-border-color: #d3d3d3; -fx-border-width: 0 0 1 0;" />
+        <Label prefHeight="18.0" prefWidth="330.0" style="-fx-border-color: #d3d3d3; -fx-border-width: 0 0 1 0;" />
 
-        <!-- Other Options -->
-        <Button fx:id="rulesButton" prefHeight="40" prefWidth="200" style="-fx-background-color: #c9b458; -fx-text-fill: white; -fx-background-radius: 5;" text="Zasady gry">
-            <font>
-                <Font name="Arial Bold" size="14.0" />
-            </font>
-        </Button>
+        <!-- Edit Mode Toggle -->
+        <HBox alignment="CENTER" spacing="10" />
 
-        <Button fx:id="highScoresButton" prefHeight="40" prefWidth="200" style="-fx-background-color: #c9b458; -fx-text-fill: white; -fx-background-radius: 5;" text="Tabela wyników">
-            <font>
-                <Font name="Arial Bold" size="14.0" />
-            </font>
-        </Button>
+        <!-- Draggable Buttons Container -->
+        <VBox fx:id="draggableButtonsContainer" alignment="CENTER" spacing="10">
 
-        <Button fx:id="exitButton" prefHeight="40" prefWidth="200" style="-fx-background-color: #787c7e; -fx-text-fill: white; -fx-background-radius: 5;" text="Wyjdź z gry">
-            <font>
-                <Font name="Arial Bold" size="14.0" />
-            </font>
-        </Button>
+            <!-- Other Options -->
+            <Button fx:id="rulesButton" prefHeight="40" prefWidth="200" style="-fx-background-color: #c9b458; -fx-text-fill: white; -fx-background-radius: 5;" text="Zasady gry">
+                <font>
+                    <Font name="Arial Bold" size="14.0" />
+                </font>
+            </Button>
+
+            <Button fx:id="highScoresButton" prefHeight="40" prefWidth="200" style="-fx-background-color: #c9b458; -fx-text-fill: white; -fx-background-radius: 5;" text="Tabela wyników">
+                <font>
+                    <Font name="Arial Bold" size="14.0" />
+                </font>
+            </Button>
+
+            <Button fx:id="exitButton" prefHeight="40" prefWidth="200" style="-fx-background-color: #787c7e; -fx-text-fill: white; -fx-background-radius: 5;" text="Wyjdź z gry">
+                <font>
+                    <Font name="Arial Bold" size="14.0" />
+                </font>
+            </Button>
+        </VBox>
+
+        <!-- Add New Button Section (visible only in edit mode) -->
+        <HBox fx:id="addButtonSection" alignment="CENTER" spacing="10" visible="false">
+            <Button fx:id="addNewButton" prefHeight="30" prefWidth="100" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Dodaj przycisk">
+                <font>
+                    <Font name="Arial Bold" size="12.0" />
+                </font>
+            </Button>
+        </HBox>
     </VBox>
 </VBox>

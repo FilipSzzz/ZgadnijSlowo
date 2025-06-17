@@ -12,8 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 import java.net.URL;
+
 import java.util.ResourceBundle;
 
 public class StartPanelController implements Initializable {
@@ -23,6 +25,7 @@ public class StartPanelController implements Initializable {
     @FXML private Button rulesButton;
     @FXML private Button highScoresButton;
     @FXML private Button exitButton;
+    @FXML private ComboBox<String> categoryComboBox;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -30,50 +33,43 @@ public class StartPanelController implements Initializable {
                 "Łatwy", "Średni", "Trudny"
         ));
         difficultyComboBox.setValue("Średni");
+        categoryComboBox.setItems(FXCollections.observableArrayList(
+                "Jedzenie","Kolory","Kraje","Zawody","Zwierzeta","Wszystkie kategorie"
+        ));
+        categoryComboBox.setValue("Wszystkie kategorie");
 
+        exitButton.setOnAction(event -> Platform.exit());
+        rulesButton.setOnAction(event -> showRules());
+        highScoresButton.setOnAction(event -> showHighScores());
         startGameButton.setOnAction(event -> {
             try {
-                String selectedDifficulty = difficultyComboBox.getValue();
-                startGame(selectedDifficulty);
-            } catch (Exception e) {
-                showErrorAlert("Nie można uruchomić gry", e.getMessage());
-                e.printStackTrace();
+                startGame(String.valueOf(difficultyComboBox.getValue()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        });
-        rulesButton.setOnAction(event -> {
-            showRules();
-        });
-        highScoresButton.setOnAction(event -> {
-            showHighScores();
-        });
-        exitButton.setOnAction(event -> {
-            Platform.exit();
         });
     }
 
     private void startGame(String difficulty) throws IOException {
-        System.out.println("Rozpoczynanie gry z poziomem trudności: " + difficulty);
-
-        // Ładowanie głównego ekranu gry
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/startPanel.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/zgadnijSlowo.fxml"));
         Parent gameRoot = loader.load();
 
-        // Przekazanie wybranego poziomu trudności do kontrolera gry
         ZgadnijSlowoController gameController = loader.getController();
-        gameController.setDifficulty(difficulty);
+        String selectedDifficulty = difficultyComboBox.getValue();
+        ZgadnijSlowoController wordDatabase = new ZgadnijSlowoController();
+        String selectedCategory = categoryComboBox.getValue();
 
-        // Wyświetlenie ekranu gry
-        Scene gameScene = new Scene(gameRoot);
-        Stage stage = (Stage) startGameButton.getScene().getWindow();
-        stage.setScene(gameScene);
-        stage.setTitle("Zgadnij slowo - " + difficulty);
+        Scene currentScene = startGameButton.getScene();
+        Stage stage = (Stage) currentScene.getWindow();
+        stage.setScene(new Scene(gameRoot));
         stage.show();
     }
+
 
     private void showRules() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Zasady gry");
-        alert.setHeaderText("Jak grać w Wordle");
+        alert.setHeaderText("Jak grać w Zgadnij Słowo");
         alert.setContentText(
                 "1. Twoim zadaniem jest odgadnięcie 5-literowego słowa w 6 próbach.\n\n" +
                         "2. Po każdej próbie kolor kafelków zmieni się, aby pokazać, jak blisko byłeś rozwiązania:\n" +
@@ -90,7 +86,6 @@ public class StartPanelController implements Initializable {
     }
 
     private void showHighScores() {
-        // przykladowe dane
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Tabela wyników");
         alert.setHeaderText("Najlepsze wyniki");

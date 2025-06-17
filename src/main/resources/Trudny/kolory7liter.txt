@@ -1,0 +1,6 @@
+bordowy,
+brązowy,
+kremowy,
+liliowy,
+magenta,
+zielony,
