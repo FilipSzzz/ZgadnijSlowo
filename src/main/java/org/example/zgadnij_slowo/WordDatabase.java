@@ -50,9 +50,19 @@ public class WordDatabase {
 
 
     public void setCategoryAndDifficulty(String category, String difficulty) {
-        String key = category.toLowerCase() + (difficulty.equalsIgnoreCase("łatwy") ? "6liter" : "7liter");
-        setCurrentCategory(key);
+        // Jeśli user wybrał już kategorię zawierającą 6liter/7liter, nie doklejaj
+        if (category.endsWith("6liter") || category.endsWith("7liter")) {
+            setCurrentCategory(category);
+        } else {
+            String key = category.toLowerCase() + (difficulty.equalsIgnoreCase("trudny") ? "7liter" : "6liter");
+            setCurrentCategory(key);
+        }
+        System.out.println("DEBUG: Ustawiam kategorię: " + currentCategory);
+        System.out.println("DEBUG: Słowa w tej kategorii: " + categories.get(currentCategory));
     }
+
+
+
 
     public String[] getCategories() {
         return categories.keySet().toArray(new String[0]);
@@ -67,10 +77,18 @@ public class WordDatabase {
     public String getRandomWord() {
         List<String> words = categories.get(currentCategory);
         if (words == null || words.isEmpty()) {
-            return "SŁOWO";
+            // Domyślnie wróć właściwej długości pusty string (lepiej: rzucić wyjątek)
+            if (currentCategory != null && currentCategory.endsWith("6liter")) {
+                return "??????"; // 6 znaków
+            } else if (currentCategory != null && currentCategory.endsWith("7liter")) {
+                return "???????"; // 7 znaków
+            } else {
+                return "??????"; // domyślnie 6
+            }
         }
         return words.get(random.nextInt(words.size()));
     }
+
 
     public String getCurrentCategory() {
         return currentCategory;
