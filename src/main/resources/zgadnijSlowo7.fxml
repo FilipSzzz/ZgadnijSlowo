@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="582.0" prefWidth="776.0" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.zgadnij_slowo.ZgadnijSlowoController" >
+
+    <!-- Left Side Menu -->
+    <VBox alignment="TOP_CENTER" prefHeight="582.0" prefWidth="277.0" spacing="15" style="-fx-background-color: #e6e6e6; -fx-padding: 20;">
+        <padding>
+            <Insets top="50" />
+        </padding>
+
+        <!-- Game Logo/Title -->
+        <Label prefHeight="33.0" prefWidth="173.0" style="-fx-font-weight: bold;" text="ZGADNIJ SŁOWO">
+            <font>
+                <Font name="Arial Bold" size="20.0" />
+            </font>
+        </Label>
+
+        <VBox alignment="CENTER" prefWidth="193.0" spacing="10" style="-fx-padding: 20 0 0 0;">
+            <!-- Game Mode Button -->
+            <Button fx:id="gameModeButton" prefHeight="40" prefWidth="150" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Zmiana trybu gry">
+                <font>
+                    <Font name="Arial Bold" size="12.0" />
+                </font>
+            </Button>
+
+            <!-- Rules Button -->
+            <Button fx:id="rulesButton" prefHeight="40" prefWidth="150" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Zasady gry">
+                <font>
+                    <Font name="Arial Bold" size="12.0" />
+                </font>
+            </Button>
+
+            <!-- High Scores Button -->
+            <Button fx:id="highScoresButton" prefHeight="40" prefWidth="150" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Najlepsze wyniki">
+                <font>
+                    <Font name="Arial Bold" size="12.0" />
+                </font>
+            </Button>
+        </VBox>
+
+        <!-- Exit Button -->
+        <Button fx:id="backButton" prefHeight="40" prefWidth="150" style="-fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 5;" text="Wyjdź">
+            <font>
+                <Font name="Arial Bold" size="12.0" />
+            </font>
+        </Button>
+        <Label fx:id="timerLabel" prefHeight="38.0" prefWidth="201.0">
+            <font>
+                <Font size="26.0" />
+            </font>
+        </Label>
+      <Button fx:id="hintButton" mnemonicParsing="false" text="Button" />
+    </VBox>
+
+    <!-- Main Game Content -->
+    <VBox alignment="CENTER" prefHeight="582.0" prefWidth="587.0" spacing="20">
+        <children>
+            <!-- Game Grid - 7x6 for 7-letter words -->
+            <GridPane fx:id="gameGrid" alignment="CENTER" hgap="5" vgap="5">
+                <VBox.margin>
+                    <Insets top="20.0" />
+                </VBox.margin>
+
+                <!-- Row 1 -->
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+
+                <!-- Row 2 -->
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+
+                <!-- Row 3 -->
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+
+                <!-- Row 4 -->
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+
+                <!-- Row 5 -->
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+
+                <!-- Row 6 -->
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
+            </GridPane>
+
+            <!-- Keyboard -->
+            <VBox fx:id="keyboardBox" alignment="CENTER" spacing="5">
+                <!-- Row 1: QWERTYUIOP -->
+                <HBox alignment="CENTER" spacing="3">
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Q">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="W">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3" text="E">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="R">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="T">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Y">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="U">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="I">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="O">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="P">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                </HBox>
+
+                <!-- Row 2: ASDFGHJKL -->
+                <HBox alignment="CENTER" spacing="3">
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="A">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="S">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="D">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="F">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="G">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="H">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="J">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="K">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="L">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                </HBox>
+
+                <!-- Row 3: Backspace, ZXCVBNM, Enter -->
+                <HBox alignment="CENTER" spacing="3">
+                    <Button prefHeight="40" prefWidth="50" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="⌫">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Z">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="X">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="C">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="V">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="B">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="N">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="M">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="50" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Enter">
+                        <font><Font name="Arial Bold" size="12.0" /></font>
+                    </Button>
+                </HBox>
+
+                <!-- Row 4: Polish characters -->
+                <HBox alignment="CENTER" spacing="3">
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Ą">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Ć">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Ę">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Ł">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Ń">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Ó">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Ś">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Ź">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                    <Button prefHeight="40" prefWidth="35" style="-fx-background-color: #d3d6da; -fx-background-radius: 3;" text="Ż">
+                        <font><Font name="Arial Bold" size="14.0" /></font>
+                    </Button>
+                </HBox>
+            </VBox>
+
+        </children>
+    </VBox>
+</HBox>

@@ -38,32 +38,57 @@ public class StartPanelController implements Initializable {
         ));
         categoryComboBox.setValue("Wszystkie kategorie");
 
+        WordDatabase wordDatabase = new WordDatabase();
+        categoryComboBox.setItems(FXCollections.observableArrayList(wordDatabase.getCategories()));
+        categoryComboBox.setValue(wordDatabase.getCategories()[0]);
+
+
         exitButton.setOnAction(event -> Platform.exit());
         rulesButton.setOnAction(event -> showRules());
         highScoresButton.setOnAction(event -> showHighScores());
         startGameButton.setOnAction(event -> {
             try {
-                startGame(String.valueOf(difficultyComboBox.getValue()));
+                startGame(
+                        String.valueOf(difficultyComboBox.getValue()),
+                        String.valueOf(categoryComboBox.getValue())
+                );
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
     }
 
-    private void startGame(String difficulty) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/zgadnijSlowo.fxml"));
+    private void startGame(String difficulty, String category) throws IOException {
+        String key;
+        if (difficulty.equalsIgnoreCase("trudny")) {
+            key = category.toLowerCase() + "7liter";
+        } else {
+            key = category.toLowerCase() + "6liter";
+        }
+
+        String fxmlToLoad;
+        if (key.endsWith("6liter")) {
+            fxmlToLoad = "/zgadnijSlowo6.fxml";
+        } else if (key.endsWith("7liter")) {
+            fxmlToLoad = "/zgadnijSlowo7.fxml";
+        } else {
+            fxmlToLoad = "/zgadnijSlowo6.fxml";
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlToLoad));
         Parent gameRoot = loader.load();
 
-        ZgadnijSlowoController gameController = loader.getController();
-        String selectedDifficulty = difficultyComboBox.getValue();
-        ZgadnijSlowoController wordDatabase = new ZgadnijSlowoController();
-        String selectedCategory = categoryComboBox.getValue();
+        // Pobierz controller i zainicjalizuj go poprawnie!
+        ZgadnijSlowoController ctrl = loader.getController();
+        ctrl.init(categoryComboBox.getValue().toLowerCase(), difficultyComboBox.getValue());
+
 
         Scene currentScene = startGameButton.getScene();
         Stage stage = (Stage) currentScene.getWindow();
         stage.setScene(new Scene(gameRoot));
         stage.show();
     }
+
 
 
     private void showRules() {
