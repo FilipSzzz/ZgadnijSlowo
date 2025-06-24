@@ -20,6 +20,12 @@ public class WordDatabase {
         loadCategoryFromResource("kolory6liter", "/kolory6liter.txt", 6);
         loadCategoryFromResource("kolory7liter", "/kolory7liter.txt", 7);
         loadCategoryFromResource("wszystkie7liter", "/wszystkie7liter.txt", 7);
+        loadCategoryFromResource("wszystkie6liter", "/wszystkie6liter.txt", 6);
+        loadCategoryFromResource("zawody6liter", "/zawody6liter.txt", 6);
+        loadCategoryFromResource("zawody7liter", "/zawody7liter.txt", 7);
+        loadCategoryFromResource("zwierzeta6liter", "/zwierzeta6liter.txt", 6);
+        loadCategoryFromResource("zwierzeta7liter", "/zwierzeta7liter.txt", 7);
+
 
     }
 

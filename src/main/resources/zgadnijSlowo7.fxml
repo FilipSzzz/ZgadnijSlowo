@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="582.0" prefWidth="776.0" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.zgadnij_slowo.ZgadnijSlowoController" >
+<HBox fx:id="rootPane" prefHeight="582.0" prefWidth="776.0" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.zgadnij_slowo.ZgadnijSlowoController">
 
     <!-- Left Side Menu -->
     <VBox alignment="TOP_CENTER" prefHeight="582.0" prefWidth="277.0" spacing="15" style="-fx-background-color: #e6e6e6; -fx-padding: 20;">
@@ -54,12 +55,20 @@
                 <Font name="Arial Bold" size="12.0" />
             </font>
         </Button>
-        <Label fx:id="timerLabel" prefHeight="38.0" prefWidth="201.0">
-            <font>
-                <Font size="26.0" />
-            </font>
-        </Label>
-      <Button fx:id="hintButton" mnemonicParsing="false" text="Button" />
+      <AnchorPane prefHeight="199.0" prefWidth="193.0">
+         <children>
+              <Label fx:id="timerLabel" layoutX="-2.0" layoutY="62.0" prefHeight="38.0" prefWidth="201.0">
+                  <font>
+                      <Font size="26.0" />
+                  </font>
+              </Label>
+            <Button fx:id="hintButton" layoutX="26.0" layoutY="-1.0" prefHeight="40" prefWidth="150" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Podpowiedź">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
     </VBox>
 
     <!-- Main Game Content -->

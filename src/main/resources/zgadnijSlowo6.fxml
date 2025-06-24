@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="582.0" prefWidth="676.0" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.zgadnij_slowo.ZgadnijSlowoController" >
+<HBox fx:id="rootPane" prefHeight="582.0" prefWidth="676.0" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.zgadnij_slowo.ZgadnijSlowoController">
 
     <!-- Left Side Menu -->
     <VBox alignment="TOP_CENTER" prefHeight="582.0" prefWidth="277.0" spacing="15" style="-fx-background-color: #e6e6e6; -fx-padding: 20;">
@@ -55,14 +55,18 @@
                  <Font name="Arial Bold" size="12.0" />
              </font>
          </Button>
-      <Label fx:id="timerLabel" prefHeight="38.0" prefWidth="201.0">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Label>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane prefHeight="194.0" prefWidth="193.0">
          <children>
-            <Button fx:id="hintButton" layoutX="33.0" layoutY="2.0" mnemonicParsing="false" text="Button" />
+            <Button fx:id="hintButton" layoutX="22.0" layoutY="-6.0" prefHeight="40" prefWidth="150" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Podpowiedź">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Button>
+            <Label fx:id="timerLabel" layoutX="19.0" layoutY="50.0" prefHeight="38.0" prefWidth="173.0">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
     </VBox>
