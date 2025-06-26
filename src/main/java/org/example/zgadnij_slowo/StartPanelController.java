@@ -36,21 +36,15 @@ public class StartPanelController implements Initializable {
     @FXML
     private ComboBox<String> categoryComboBox;
     @FXML private TextField nickField;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        difficultyComboBox.setItems(FXCollections.observableArrayList(
-                "Łatwy", "Średni", "Trudny"
-        ));
+        difficultyComboBox.setItems(FXCollections.observableArrayList("Łatwy", "Średni", "Trudny"));
         difficultyComboBox.setValue("Średni");
         categoryComboBox.setItems(FXCollections.observableArrayList(
-                "Jedzenie", "Kolory", "Kraje", "Zawody", "Zwierzeta", "Wszystkie kategorie"
+                "Jedzenie", "Kolory", "Kraje", "Zawody", "Zwierzeta", "Wszystkie"
         ));
-        categoryComboBox.setValue("Wszystkie kategorie");
-
-        WordDatabase wordDatabase = new WordDatabase();
-        categoryComboBox.setItems(FXCollections.observableArrayList(wordDatabase.getCategories()));
-        categoryComboBox.setValue(wordDatabase.getCategories()[0]);
-
+        categoryComboBox.setValue("Jedzenie");
 
         exitButton.setOnAction(event -> Platform.exit());
         rulesButton.setOnAction(event -> showRules());
@@ -68,30 +62,19 @@ public class StartPanelController implements Initializable {
     }
 
     private void startGame(String difficulty, String category) throws IOException {
-        String key;
-        if (difficulty.equalsIgnoreCase("trudny")) {
-            key = category.toLowerCase() + "7liter";
-        } else if (difficulty.equalsIgnoreCase("łatwy")) {
-            key = category.toLowerCase() + "5liter";
-        } else {
-            key = category.toLowerCase() + "6liter";
-        }
         String fxmlToLoad;
-        if (key.endsWith("6liter")) {
-            fxmlToLoad = "/zgadnijSlowo6.fxml";
-        } else if (key.endsWith("7liter")) {
+        if (difficulty.equalsIgnoreCase("trudny")) {
             fxmlToLoad = "/zgadnijSlowo7.fxml";
-        } else if (key.endsWith("5liter")) {
+        } else if (difficulty.equalsIgnoreCase("łatwy")) {
             fxmlToLoad = "/zgadnijSlowo5.fxml";
         } else {
-            fxmlToLoad = "/zgadnijSlowo5.fxml";
+            fxmlToLoad = "/zgadnijSlowo6.fxml";
         }
-
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlToLoad));
         Parent gameRoot = loader.load();
         ZgadnijSlowoController ctrl = loader.getController();
-        ctrl.init(categoryComboBox.getValue().toLowerCase(), difficultyComboBox.getValue());
+        ctrl.init(category, difficulty);
         ctrl.setNick(nickField.getText());
         ctrl.setStartPanelController(this);
         Scene currentScene = startGameButton.getScene();
@@ -99,7 +82,6 @@ public class StartPanelController implements Initializable {
         stage.setScene(new Scene(gameRoot));
         stage.show();
     }
-
 
     private void showRules() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

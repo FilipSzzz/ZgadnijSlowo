@@ -70,25 +70,18 @@ public class WordDatabase {
             normalizedCategory.endsWith("7liter")) {
             key = normalizedCategory;
         } else {
-            // Określ długość na podstawie trudności
             int length;
-            if (difficulty.equalsIgnoreCase("5liter") || difficulty.equals("5")) {
+            if (difficulty.equalsIgnoreCase("łatwy") || difficulty.equals("5")) {
                 length = 5;
             } else if (difficulty.equalsIgnoreCase("trudny") || difficulty.equalsIgnoreCase("7liter") || difficulty.equals("7")) {
                 length = 7;
             } else {
-                length = 6; // domyślnie
+                length = 6;
             }
             key = normalizedCategory + length + "liter";
         }
         setCurrentCategory(key);
-
-
     }
-    public String[] getCategories() {
-            return categories.keySet().toArray(new String[0]);
-    }
-
     public void setCurrentCategory(String category) {
         if (categories.containsKey(category)) {
                 this.currentCategory = category;

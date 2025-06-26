@@ -45,14 +45,25 @@ public class ZgadnijSlowoController implements Initializable {
         this.wordDatabase = new WordDatabase();
         if (difficulty.equalsIgnoreCase("trudny")) {
             this.wordLength = 7;
+            if (time != null) time.stop();
+            time = new Time(200, () -> {
+                Platform.runLater(() -> timerLabel.setText("Pozostały czas: " + time.timeSecondsProperty().get() + " sekund"));
+            }, this::onTimeUp);
+            time.start();
         } else if (difficulty.equalsIgnoreCase("łatwy")) {
             this.wordLength = 5;
-        }else{
+            if (time != null) time.stop();
+            timerLabel.setText(""); // Brak czasu dla łatwego
+        } else {
             this.wordLength = 6;
+            if (time != null) time.stop();
+            time = new Time(500, () -> {
+                Platform.runLater(() -> timerLabel.setText("Pozostały czas: " + time.timeSecondsProperty().get() + " sekund"));
+            }, this::onTimeUp);
+            time.start();
         }
         setupGame();
     }
-
     private void setupGame() {
         if (wordDatabase == null) {
             wordDatabase = new WordDatabase();
@@ -63,7 +74,6 @@ public class ZgadnijSlowoController implements Initializable {
         this.currentCol = 0;
         this.currentGuess = new StringBuilder();
         this.gameOver = false;
-
         setupGrid();
         setupKeyboard();
         System.out.println("Wylosowane słowo: " + targetWord);
@@ -88,12 +98,19 @@ public class ZgadnijSlowoController implements Initializable {
                 }
             });
         });
-        timerLabel.setText("Pozostały czas: 60 sekund");
-        if (time != null) time.stop();
-        time = new Time(60, () -> {
-            Platform.runLater(() -> timerLabel.setText("Pozostały czas: " + time.timeSecondsProperty().get() + " sekund"));
-        }, this::onTimeUp);
-        time.start();
+        if (difficulty.equalsIgnoreCase("trudny")) {
+            if (time != null) time.stop();
+            time = new Time(200, () -> {
+                Platform.runLater(() -> timerLabel.setText("Pozostały czas: " + time.timeSecondsProperty().get() + " sekund"));
+            }, this::onTimeUp);
+            time.start();
+        } else if (difficulty.equalsIgnoreCase("średni")) {
+            if (time != null) time.stop();
+            time = new Time(500, () -> {
+                Platform.runLater(() -> timerLabel.setText("Pozostały czas: " + time.timeSecondsProperty().get() + " sekund"));
+            }, this::onTimeUp);
+            time.start();
+        }
     }
 
     private void setupGrid() {
@@ -115,7 +132,6 @@ public class ZgadnijSlowoController implements Initializable {
     }
 
     private void setupKeyboard() {
-        // Możesz dodać styl wyłączenia dla klawiszy, ale tu wystarczy blokada w handleKeyboardInput/gameOver
         for (Node rowBox : keyboardBox.getChildren()) {
             if (rowBox instanceof HBox) {
                 for (Node btnNode : ((HBox) rowBox).getChildren()) {
@@ -168,12 +184,6 @@ public class ZgadnijSlowoController implements Initializable {
     private void submitGuess() {
         if (gameOver) return;
         String guess = currentGuess.toString();
-
-        if (guess.length() != wordLength) {
-            showAlert("Błąd", "Słowo musi mieć dokładnie " + wordLength + " liter.");
-            return;
-        }
-
         colorGuessRow(guess);
 
         if (guess.equalsIgnoreCase(targetWord)) {
@@ -262,14 +272,14 @@ public class ZgadnijSlowoController implements Initializable {
         });
     }
     private void onTimeUp() {
+        gameOver = true;
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Koniec czasu");
             alert.setHeaderText(null);
-            alert.setContentText("Czas na zgadywanie minął!");
+            alert.setContentText("Czas minął!");
             alert.initOwner(rootPane.getScene().getWindow());
             alert.showAndWait();
-            gameOver = true;
 
         });
     }
