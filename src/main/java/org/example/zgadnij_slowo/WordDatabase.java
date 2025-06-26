@@ -1,5 +1,8 @@
 package org.example.zgadnij_slowo;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.io.*;
@@ -25,6 +28,11 @@ public class WordDatabase {
         loadCategoryFromResource("zawody7liter", "/zawody7liter.txt", 7);
         loadCategoryFromResource("zwierzeta6liter", "/zwierzeta6liter.txt", 6);
         loadCategoryFromResource("zwierzeta7liter", "/zwierzeta7liter.txt", 7);
+        loadCategoryFromResource("jedzenie5liter","/jedzenie5liter.txt", 5);
+        loadCategoryFromResource("kraje5liter","/kraje5liter.txt", 5);
+        loadCategoryFromResource("wszystkie5liter","/wszystkie5liter.txt", 5);
+        loadCategoryFromResource("zwierzeta5liter","/zwierzeta5liter.txt", 5);
+        loadCategoryFromResource("zawody5liter","/zawody5liter.txt", 5);
 
 
     }
@@ -44,59 +52,69 @@ public class WordDatabase {
                     }
                 }
             }
-            System.out.println("Załadowano do " + categoryName + ": " + words);
 
             categories.put(categoryName, words);
         } catch (IOException | NullPointerException e) {
-            System.err.println("Błąd podczas wczytywania zasobu '" + resourcePath + "': " + e.getMessage());
+            showAlert("Błąd ładowania kategorii: " + categoryName, "Nie można załadować słów z pliku: " + resourcePath);
         }
     }
-
-
-
 
     public void setCategoryAndDifficulty(String category, String difficulty) {
-        // Jeśli user wybrał już kategorię zawierającą 6liter/7liter, nie doklejaj
-        if (category.endsWith("6liter") || category.endsWith("7liter")) {
-            setCurrentCategory(category);
-        } else {
-            String key = category.toLowerCase() + (difficulty.equalsIgnoreCase("trudny") ? "7liter" : "6liter");
-            setCurrentCategory(key);
+        if (category == null || difficulty == null) {
+            return;
         }
-        System.out.println("DEBUG: Ustawiam kategorię: " + currentCategory);
-        System.out.println("DEBUG: Słowa w tej kategorii: " + categories.get(currentCategory));
+        String normalizedCategory = category.toLowerCase();
+        String key;
+        if (normalizedCategory.endsWith("5liter") ||
+            normalizedCategory.endsWith("6liter") ||
+            normalizedCategory.endsWith("7liter")) {
+            key = normalizedCategory;
+        } else {
+            // Określ długość na podstawie trudności
+            int length;
+            if (difficulty.equalsIgnoreCase("5liter") || difficulty.equals("5")) {
+                length = 5;
+            } else if (difficulty.equalsIgnoreCase("trudny") || difficulty.equalsIgnoreCase("7liter") || difficulty.equals("7")) {
+                length = 7;
+            } else {
+                length = 6; // domyślnie
+            }
+            key = normalizedCategory + length + "liter";
+        }
+        setCurrentCategory(key);
+
+
     }
-
-
-
-
     public String[] getCategories() {
-        return categories.keySet().toArray(new String[0]);
+            return categories.keySet().toArray(new String[0]);
     }
 
     public void setCurrentCategory(String category) {
         if (categories.containsKey(category)) {
-            this.currentCategory = category;
+                this.currentCategory = category;
         }
     }
 
     public String getRandomWord() {
         List<String> words = categories.get(currentCategory);
         if (words == null || words.isEmpty()) {
-            // Domyślnie wróć właściwej długości pusty string (lepiej: rzucić wyjątek)
             if (currentCategory != null && currentCategory.endsWith("6liter")) {
                 return "??????"; // 6 znaków
             } else if (currentCategory != null && currentCategory.endsWith("7liter")) {
                 return "???????"; // 7 znaków
-            } else {
-                return "??????"; // domyślnie 6
+            } else if (currentCategory != null && currentCategory.endsWith("5liter")) {
+                return "?????"; // 5 znaków
             }
         }
         return words.get(random.nextInt(words.size()));
     }
-
-
-    public String getCurrentCategory() {
-        return currentCategory;
+    private void showAlert(String title, String text) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(text);
+            alert.showAndWait();
+        });
     }
 }

@@ -48,25 +48,21 @@
                 </font>
             </Button>
         </VBox>
-
-        <!-- Exit Button -->
-        <Button fx:id="backButton" prefHeight="40" prefWidth="150" style="-fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 5;" text="Wyjdź">
-            <font>
-                <Font name="Arial Bold" size="12.0" />
-            </font>
-        </Button>
       <AnchorPane prefHeight="199.0" prefWidth="193.0">
          <children>
-              <Label fx:id="timerLabel" layoutX="-2.0" layoutY="62.0" prefHeight="38.0" prefWidth="201.0">
-                  <font>
-                      <Font size="26.0" />
-                  </font>
-              </Label>
-            <Button fx:id="hintButton" layoutX="26.0" layoutY="-1.0" prefHeight="40" prefWidth="150" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Podpowiedź">
+            <Button fx:id="hintButton" layoutX="26.0" layoutY="-4.0" prefHeight="40" prefWidth="150" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Podpowiedź">
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font>
             </Button>
+      
+              <!-- Exit Button -->
+              <Button fx:id="backButton" layoutX="26.0" layoutY="47.0" prefHeight="40" prefWidth="150" style="-fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 5;" text="Wyjdź">
+                  <font>
+                      <Font name="Arial Bold" size="12.0" />
+                  </font>
+              </Button>
+            <Label fx:id="timerLabel" layoutX="26.0" layoutY="100.0" prefHeight="40.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
     </VBox>

@@ -11,4 +11,11 @@ marchew,
 oregano,
 papryka,
 pomidor
-awokado
+awokado,
+groszek,
+kabanos,
+kapusta,
+kopytka,
+pasztet,
+piernik,
+sałatka,

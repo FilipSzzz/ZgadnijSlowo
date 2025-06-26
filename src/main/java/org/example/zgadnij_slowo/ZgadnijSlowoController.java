@@ -7,8 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.*;
 
@@ -20,11 +18,14 @@ public class ZgadnijSlowoController implements Initializable {
     @FXML private Button rulesButton;
     @FXML private Button highScoresButton;
     @FXML private Button backButton;
-    @FXML private Label timerLabel;
     @FXML private Button hintButton;
-    @FXML private HBox rootPane;
+    @FXML private Label timerLabel;
+    private Time time;
+    @FXML private Pane rootPane;
+    private StartPanelController startPanelController;
 
-    private int wordLength = 6;      // domyślnie
+
+    private int wordLength = 6;
     private int maxTries = 6;
     private int currentRow = 0;
     private int currentCol = 0;
@@ -32,56 +33,24 @@ public class ZgadnijSlowoController implements Initializable {
     private String category = "Jedzenie";
     private String difficulty = "Średni";
     private List<List<Label>> gridLabels = new ArrayList<>();
-    private final Map<String, Button> letterButtons = new HashMap<>();
     private WordDatabase wordDatabase;
     private StringBuilder currentGuess = new StringBuilder();
     private boolean gameOver = false;
+    private PlayerScore playerScore = new PlayerScore();
+    private String playerName = "Gracz";
 
-    private Stage stage;
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-    // WYWOŁAJ TĄ METODĘ ze StartPanelu!
     public void init(String category, String difficulty) {
-        this.category = category.toLowerCase();
+        this.category = category;
         this.difficulty = difficulty;
         this.wordDatabase = new WordDatabase();
         if (difficulty.equalsIgnoreCase("trudny")) {
             this.wordLength = 7;
-        } else {
+        } else if (difficulty.equalsIgnoreCase("łatwy")) {
+            this.wordLength = 5;
+        }else{
             this.wordLength = 6;
         }
         setupGame();
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setupListeners();
-        Platform.runLater(() -> {
-            rootPane.requestFocus();
-            rootPane.setOnKeyPressed(event -> {
-                if (gameOver) return;
-
-                String key = event.getText().toUpperCase();
-
-                switch (event.getCode()) {
-                    case ENTER -> {
-                        if (currentGuess.length() == wordLength) {
-                            submitGuess();
-                        }
-                    }
-                    case BACK_SPACE, DELETE -> {
-                        removeLetter();
-                    }
-                    default -> {
-                        if (key.matches("[A-ZĄĆĘŁŃÓŚŻŹ]") && currentCol < wordLength && currentRow < maxTries) {
-                            addLetter(key);
-                        }
-                    }
-                }
-            });
-        });
     }
 
     private void setupGame() {
@@ -97,11 +66,35 @@ public class ZgadnijSlowoController implements Initializable {
 
         setupGrid();
         setupKeyboard();
-        System.out.println("Wylosowane słowo: " + targetWord); // DEBUG
+        System.out.println("Wylosowane słowo: " + targetWord);
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setupListeners();
+        setupGame();
+        Platform.runLater(() -> {
+            gameGrid.requestFocus();
+            gameGrid.setOnKeyTyped(event -> {
+                if (gameOver) return;
+                String key = event.getCharacter().toUpperCase();
 
-
+                if ("\r".equals(key)) { // Enter
+                    if (currentGuess.length() == wordLength) submitGuess();
+                } else if ("\b".equals(key)) { // Backspace
+                    removeLetter();
+                } else if (key.matches("[A-ZĄĆĘŁŃÓŚŻŹ]") && key.length() == 1 && currentCol < wordLength && currentRow < maxTries) {
+                    addLetter(key);
+                }
+            });
+        });
+        timerLabel.setText("Pozostały czas: 60 sekund");
+        if (time != null) time.stop();
+        time = new Time(60, () -> {
+            Platform.runLater(() -> timerLabel.setText("Pozostały czas: " + time.timeSecondsProperty().get() + " sekund"));
+        }, this::onTimeUp);
+        time.start();
+    }
 
     private void setupGrid() {
         gameGrid.getChildren().clear();
@@ -120,15 +113,14 @@ public class ZgadnijSlowoController implements Initializable {
             gridLabels.add(rowLabels);
         }
     }
-    private void setupKeyboard() {
-        letterButtons.clear(); // <--- dodane
 
+    private void setupKeyboard() {
+        // Możesz dodać styl wyłączenia dla klawiszy, ale tu wystarczy blokada w handleKeyboardInput/gameOver
         for (Node rowBox : keyboardBox.getChildren()) {
             if (rowBox instanceof HBox) {
                 for (Node btnNode : ((HBox) rowBox).getChildren()) {
-                    if (btnNode instanceof Button btn) {
-                        String key = btn.getText().toUpperCase();
-                        letterButtons.put(key, btn); // <--- zapisz do mapy
+                    if (btnNode instanceof Button) {
+                        Button btn = (Button) btnNode;
                         btn.setFocusTraversable(false);
                         btn.setOnAction(e -> handleKeyboardInput(btn));
                     }
@@ -136,79 +128,11 @@ public class ZgadnijSlowoController implements Initializable {
             }
         }
     }
-    private void colorGuessRow(String guess) {
-        guess = guess.toUpperCase();
-        String answer = targetWord.toUpperCase();
 
-        boolean[] answerUsed = new boolean[wordLength];
-        boolean[] guessGreen = new boolean[wordLength];
-
-        // Etap 1: Zielone (dokładne trafienie)
-        for (int i = 0; i < wordLength; i++) {
-            char g = guess.charAt(i);
-            char a = answer.charAt(i);
-            Label cell = gridLabels.get(currentRow).get(i);
-
-            if (g == a) {
-                styleCell(cell, "#6aaa64"); // zielony
-                answerUsed[i] = true;
-                guessGreen[i] = true;
-                updateKeyColor(g, "#6aaa64");
-            } else {
-                styleCell(cell, "#787c7e"); // szary domyślnie
-                updateKeyColor(g, "#787c7e");
-            }
-        }
-
-        // Etap 2: Żółte (litera występuje gdzie indziej)
-        for (int i = 0; i < wordLength; i++) {
-            if (!guessGreen[i]) {
-                char g = guess.charAt(i);
-                for (int j = 0; j < wordLength; j++) {
-                    if (!answerUsed[j] && g == answer.charAt(j)) {
-                        styleCell(gridLabels.get(currentRow).get(i), "#c9b458"); // żółty
-                        answerUsed[j] = true;
-                        updateKeyColor(g, "#c9b458");
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    private void styleCell(Label cell, String color) {
-        cell.setStyle("-fx-background-color: " + color + "; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
-    }
-
-    private void updateKeyColor(char letter, String newColor) {
-        String key = String.valueOf(letter).toUpperCase();
-        Button btn = letterButtons.get(key);
-        if (btn == null) return;
-
-        String currentStyle = btn.getStyle();
-        String bestColor = extractHexColor(currentStyle);
-
-        if (bestColor == null || isWeakerColor(bestColor, newColor)) {
-            btn.setStyle("-fx-background-color: " + newColor + "; -fx-background-radius: 3; -fx-text-fill: white; -fx-font-weight: bold;");
-        }
-    }
-
-    // Jeśli kolor nowy > stary w "rankingu": szary < żółty < zielony
-    private boolean isWeakerColor(String oldColor, String newColor) {
-        List<String> colorRank = List.of("#787c7e", "#c9b458", "#6aaa64");
-        return colorRank.indexOf(newColor) > colorRank.indexOf(oldColor);
-    }
-
-    private String extractHexColor(String style) {
-        int idx = style.indexOf("-fx-background-color: ");
-        if (idx == -1) return null;
-        int start = idx + "-fx-background-color: ".length();
-        int end = style.indexOf(";", start);
-        return (end != -1) ? style.substring(start, end).trim() : null;
-    }
-    private void handleKeyboardInput(Button btn) {
+    private void handleKeyboardInput(Button keyboardButton) {
         if (gameOver) return;
 
-        String key = btn.getText();
+        String key = keyboardButton.getText();
 
         if ("Enter".equals(key)) {
             if (currentGuess.length() == wordLength) {
@@ -234,7 +158,7 @@ public class ZgadnijSlowoController implements Initializable {
 
     private void removeLetter() {
         if (gameOver) return;
-        if (currentCol > 0 && currentGuess.length() > 0) {
+        if (currentCol > 0 && !currentGuess.isEmpty()) {
             currentCol--;
             gridLabels.get(currentRow).get(currentCol).setText("");
             currentGuess.deleteCharAt(currentGuess.length() - 1);
@@ -255,6 +179,9 @@ public class ZgadnijSlowoController implements Initializable {
         if (guess.equalsIgnoreCase(targetWord)) {
             showAlert("Brawo!", "Odgadłeś słowo: " + targetWord);
             gameOver = true;
+            int hintsUsed = playerScore.getHintCount(playerName);
+            int finalScore = playerScore.calculateFinalScore(playerName, currentRow + 1, maxTries);
+            playerScore.saveScore(playerName, finalScore, currentRow + 1, hintsUsed, finalScore);
         } else {
             currentRow++;
             currentCol = 0;
@@ -263,14 +190,68 @@ public class ZgadnijSlowoController implements Initializable {
             if (currentRow >= maxTries) {
                 showAlert("Przegrana", "Nie udało się! Szukane słowo to: " + targetWord);
                 gameOver = true;
+                int hintsUsed = playerScore.getHintCount(playerName);
+                int finalScore = playerScore.calculateFinalScore(playerName, maxTries, maxTries);
+                playerScore.saveScore(playerName, finalScore, maxTries, hintsUsed, finalScore);
             }
         }
     }
+    private void colorGuessRow(String guess) {
+        guess = guess.toUpperCase();
+        String answer = targetWord.toUpperCase();
 
+        boolean[] answerUsed = new boolean[wordLength];
+        boolean[] guessGreen = new boolean[wordLength];
+
+        for (int i = 0; i < wordLength; i++) {
+            Label cell = gridLabels.get(currentRow).get(i);
+            char g = guess.charAt(i);
+            char a = answer.charAt(i);
+
+            if (g == a) {
+                cell.setStyle("-fx-background-color: #6aaa64; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
+                answerUsed[i] = true;
+                guessGreen[i] = true;
+            } else {
+                cell.setStyle("-fx-background-color: #787c7e; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
+            }
+        }
+        // 2. Żółte: litera jest gdzieś indziej (i nie została już przypisana zielonemu)
+        for (int i = 0; i < wordLength; i++) {
+            if (!guessGreen[i]) {
+                char g = guess.charAt(i);
+                for (int j = 0; j < wordLength; j++) {
+                    if (!answerUsed[j] && g == answer.charAt(j)) {
+                        Label cell = gridLabels.get(currentRow).get(i);
+                        cell.setStyle("-fx-background-color: #c9b458; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
+                        answerUsed[j] = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
     private void setupListeners() {
         gameModeButton.setOnAction(e -> showInfo("Zmiana trybu gry", "Zmień tryb w menu głównym"));
-        rulesButton.setOnAction(e -> showInfo("Zasady gry", "1. Odgadnij słowo\n2. Masz 6 prób\n3. Kolory podpowiedzi jak w Wordle"));
-        highScoresButton.setOnAction(e -> showInfo("Najlepsze wyniki", "Wyniki znajdziesz w menu głównym"));
+        rulesButton.setOnAction(e ->  {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Zasady gry");
+            alert.setHeaderText("Jak grać w Zgadnij Słowo");
+            alert.setContentText(
+                    "1. Twoim zadaniem jest odgadnięcie słowa w 6 próbach.\n\n" +
+                            "2. Po każdej próbie kolor kafelków zmieni się, aby pokazać, jak blisko byłeś rozwiązania:\n" +
+                            "   - Zielony: litera jest w słowie i we właściwym miejscu\n" +
+                            "   - Żółty: litera jest w słowie, ale w złym miejscu\n" +
+                            "   - Szary: litera nie występuje w słowie\n\n" +
+                            "3. Poziomy trudności:\n" +
+                            "   - Łatwy: słowa na 5 liter\n" +
+                            "   - Średni: słowa na 6 liter\n" +
+                            "   - Trudny: słowa na 7 liter\n\n" +
+                            "Powodzenia!"
+            );
+            alert.showAndWait();
+        });
+        highScoresButton.setOnAction(e -> startPanelController.showHighScores());
         backButton.setOnAction(e -> Platform.exit());
         hintButton.setOnAction(e -> {
             if (targetWord == null || targetWord.isEmpty()) {
@@ -280,7 +261,18 @@ public class ZgadnijSlowoController implements Initializable {
             }
         });
     }
+    private void onTimeUp() {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Koniec czasu");
+            alert.setHeaderText(null);
+            alert.setContentText("Czas na zgadywanie minął!");
+            alert.initOwner(rootPane.getScene().getWindow());
+            alert.showAndWait();
+            gameOver = true;
 
+        });
+    }
     private void showAlert(String title, String text) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -290,7 +282,12 @@ public class ZgadnijSlowoController implements Initializable {
             alert.showAndWait();
         });
     }
-
+    public void setNick(String nick) {
+        this.playerName = nick;
+    }
+    public void setStartPanelController(StartPanelController startPanelController) {
+        this.startPanelController = startPanelController;
+    }
     private void showInfo(String title, String text) {
         showAlert(title, text);
     }

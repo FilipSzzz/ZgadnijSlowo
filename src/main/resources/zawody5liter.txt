@@ -1,0 +1,7 @@
+aktor,
+pilot,
+muzyk,
+nurek,
+model,
+szewc,
+agent,

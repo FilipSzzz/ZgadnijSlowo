@@ -1,0 +1,6 @@
+czarny,
+granat,
+różowy,
+indygo,
+fiolet,
+indygo,

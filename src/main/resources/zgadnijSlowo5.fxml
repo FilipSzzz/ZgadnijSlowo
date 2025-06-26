@@ -48,23 +48,23 @@
                 </font>
             </Button>
         </VBox>
-      <AnchorPane prefHeight="194.0" prefWidth="193.0">
-         <children>
-            <Button fx:id="hintButton" layoutX="22.0" layoutY="-4.0" prefHeight="40" prefWidth="150" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Podpowiedź">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-            </Button>
+        <AnchorPane prefHeight="194.0" prefWidth="193.0">
+            <children>
+                <Button fx:id="hintButton" layoutX="22.0" layoutY="-6.0" prefHeight="40" prefWidth="150" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Podpowiedź">
+                    <font>
+                        <Font name="Arial Bold" size="12.0" />
+                    </font>
+                </Button>
       
-               <!-- Exit Button -->
-               <Button fx:id="backButton" layoutX="22.0" layoutY="46.0" prefHeight="40" prefWidth="150" style="-fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 5;" text="Wyjdź">
-                   <font>
-                       <Font name="Arial Bold" size="12.0" />
-                   </font>
-               </Button>
+              <!-- Exit Button -->
+              <Button fx:id="backButton" layoutX="22.0" layoutY="44.0" prefHeight="40" prefWidth="150" style="-fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 5;" text="Wyjdź">
+                  <font>
+                      <Font name="Arial Bold" size="12.0" />
+                  </font>
+              </Button>
             <Label fx:id="timerLabel" layoutX="22.0" layoutY="97.0" prefHeight="40.0" prefWidth="150.0" />
-         </children>
-      </AnchorPane>
+            </children>
+        </AnchorPane>
     </VBox>
 
     <!-- Main Game Content -->
@@ -119,21 +119,21 @@
                 <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                 <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                 <Label prefHeight="50" prefWidth="50" style="-fx-background-color: white; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-background-radius: 3;" GridPane.columnIndex="4" GridPane.rowIndex="5" />
-            <columnConstraints>
-               <ColumnConstraints />
-               <ColumnConstraints />
-               <ColumnConstraints />
-               <ColumnConstraints />
-               <ColumnConstraints />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-            </rowConstraints>
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
             </GridPane>
 
             <!-- Keyboard -->
