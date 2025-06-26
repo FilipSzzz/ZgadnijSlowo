@@ -7,6 +7,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import org.example.zgadnij_slowo.Database.WordDatabase;
+import org.example.zgadnij_slowo.Score.PlayerScore;
+import org.example.zgadnij_slowo.Score.Time;
+
 import java.net.URL;
 import java.util.*;
 
@@ -38,6 +42,7 @@ public class ZgadnijSlowoController implements Initializable {
     private boolean gameOver = false;
     private PlayerScore playerScore = new PlayerScore();
     private String playerName = "Gracz";
+    private long startTime;
 
     public void init(String category, String difficulty) {
         this.category = category;
@@ -53,7 +58,7 @@ public class ZgadnijSlowoController implements Initializable {
         } else if (difficulty.equalsIgnoreCase("łatwy")) {
             this.wordLength = 5;
             if (time != null) time.stop();
-            timerLabel.setText(""); // Brak czasu dla łatwego
+            timerLabel.setText("");
         } else {
             this.wordLength = 6;
             if (time != null) time.stop();
@@ -74,9 +79,10 @@ public class ZgadnijSlowoController implements Initializable {
         this.currentCol = 0;
         this.currentGuess = new StringBuilder();
         this.gameOver = false;
+        this.startTime = System.currentTimeMillis();
         setupGrid();
         setupKeyboard();
-        System.out.println("Wylosowane słowo: " + targetWord);
+
     }
 
     @Override
@@ -89,9 +95,9 @@ public class ZgadnijSlowoController implements Initializable {
                 if (gameOver) return;
                 String key = event.getCharacter().toUpperCase();
 
-                if ("\r".equals(key)) { // Enter
+                if ("\r".equals(key)) { // enter
                     if (currentGuess.length() == wordLength) submitGuess();
-                } else if ("\b".equals(key)) { // Backspace
+                } else if ("\b".equals(key)) { // backspace
                     removeLetter();
                 } else if (key.matches("[A-ZĄĆĘŁŃÓŚŻŹ]") && key.length() == 1 && currentCol < wordLength && currentRow < maxTries) {
                     addLetter(key);
@@ -130,7 +136,7 @@ public class ZgadnijSlowoController implements Initializable {
             gridLabels.add(rowLabels);
         }
     }
-
+    // obsluga klawiatury ekranowej
     private void setupKeyboard() {
         for (Node rowBox : keyboardBox.getChildren()) {
             if (rowBox instanceof HBox) {
@@ -144,12 +150,10 @@ public class ZgadnijSlowoController implements Initializable {
             }
         }
     }
-
     private void handleKeyboardInput(Button keyboardButton) {
         if (gameOver) return;
 
         String key = keyboardButton.getText();
-
         if ("Enter".equals(key)) {
             if (currentGuess.length() == wordLength) {
                 submitGuess();
@@ -162,7 +166,6 @@ public class ZgadnijSlowoController implements Initializable {
             addLetter(key.toUpperCase());
         }
     }
-
     private void addLetter(String letter) {
         if (gameOver) return;
         if (currentCol < wordLength) {
@@ -187,11 +190,16 @@ public class ZgadnijSlowoController implements Initializable {
         colorGuessRow(guess);
 
         if (guess.equalsIgnoreCase(targetWord)) {
-            showAlert("Brawo!", "Odgadłeś słowo: " + targetWord);
+            long endTIme = System.currentTimeMillis();
+            long timeTaken = (endTIme - startTime) / 1000;
+            showAlert("Brawo!", "Odgadłeś słowo: " + targetWord + "\nCzas: " + timeTaken + " sekund");
             gameOver = true;
             int hintsUsed = playerScore.getHintCount(playerName);
             int finalScore = playerScore.calculateFinalScore(playerName, currentRow + 1, maxTries);
-            playerScore.saveScore(playerName, finalScore, currentRow + 1, hintsUsed, finalScore);
+            playerScore.saveScore(playerName, currentRow + 1, maxTries, playerScore.getHintCount(playerName), finalScore, (int) timeTaken);
+            if (time != null) {
+                time.stop();
+            }
         } else {
             currentRow++;
             currentCol = 0;
@@ -201,8 +209,8 @@ public class ZgadnijSlowoController implements Initializable {
                 showAlert("Przegrana", "Nie udało się! Szukane słowo to: " + targetWord);
                 gameOver = true;
                 int hintsUsed = playerScore.getHintCount(playerName);
-                int finalScore = playerScore.calculateFinalScore(playerName, maxTries, maxTries);
-                playerScore.saveScore(playerName, finalScore, maxTries, hintsUsed, finalScore);
+                int finalScore = playerScore.calculateFinalScore(playerName, currentRow + 1, maxTries);
+                playerScore.saveScore(playerName, currentRow + 1, maxTries, playerScore.getHintCount(playerName), finalScore, (int) ((System.currentTimeMillis() - startTime) / 1000));
             }
         }
     }
@@ -226,7 +234,6 @@ public class ZgadnijSlowoController implements Initializable {
                 cell.setStyle("-fx-background-color: #787c7e; -fx-border-color: #d3d3d3; -fx-border-width: 2; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
             }
         }
-        // 2. Żółte: litera jest gdzieś indziej (i nie została już przypisana zielonemu)
         for (int i = 0; i < wordLength; i++) {
             if (!guessGreen[i]) {
                 char g = guess.charAt(i);
@@ -269,8 +276,10 @@ public class ZgadnijSlowoController implements Initializable {
             } else {
                 showInfo("Podpowiedź", "Pierwsza litera: " + targetWord.charAt(0));
             }
+            Platform.runLater(() -> gameGrid.requestFocus());
         });
     }
+
     private void onTimeUp() {
         gameOver = true;
         Platform.runLater(() -> {

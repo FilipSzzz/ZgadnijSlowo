@@ -1,4 +1,4 @@
-package org.example.zgadnij_slowo;
+package org.example.zgadnij_slowo.Database;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -22,6 +22,7 @@ public class WordDatabase {
         loadCategoryFromResource("kraje7liter", "/kraje7liter.txt", 7);
         loadCategoryFromResource("kolory6liter", "/kolory6liter.txt", 6);
         loadCategoryFromResource("kolory7liter", "/kolory7liter.txt", 7);
+        loadCategoryFromResource("kolory5liter", "/kolory5liter.txt", 8);
         loadCategoryFromResource("wszystkie7liter", "/wszystkie7liter.txt", 7);
         loadCategoryFromResource("wszystkie6liter", "/wszystkie6liter.txt", 6);
         loadCategoryFromResource("zawody6liter", "/zawody6liter.txt", 6);
@@ -52,7 +53,6 @@ public class WordDatabase {
                     }
                 }
             }
-
             categories.put(categoryName, words);
         } catch (IOException | NullPointerException e) {
             showAlert("Błąd ładowania kategorii: " + categoryName, "Nie można załadować słów z pliku: " + resourcePath);
@@ -91,13 +91,8 @@ public class WordDatabase {
     public String getRandomWord() {
         List<String> words = categories.get(currentCategory);
         if (words == null || words.isEmpty()) {
-            if (currentCategory != null && currentCategory.endsWith("6liter")) {
-                return "??????"; // 6 znaków
-            } else if (currentCategory != null && currentCategory.endsWith("7liter")) {
-                return "???????"; // 7 znaków
-            } else if (currentCategory != null && currentCategory.endsWith("5liter")) {
-                return "?????"; // 5 znaków
-            }
+            showAlert("BRAK SŁÓW","Nie znaleziono słow w tej kategorii");
+            return null;
         }
         return words.get(random.nextInt(words.size()));
     }

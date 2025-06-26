@@ -1,5 +1,4 @@
-// src/main/java/org/example/zgadnij_slowo/Time.java
-package org.example.zgadnij_slowo;
+package org.example.zgadnij_slowo.Score;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -27,13 +26,11 @@ public class Time {
         }));
         timeline.setCycleCount(seconds);
     }
-
     public void start() {
         if (timeline != null) {
             timeline.playFromStart();
         }
     }
-
     public void stop() {
         if (timeline != null) {
             timeline.stop();

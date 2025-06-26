@@ -1,0 +1,6 @@
+czerń,
+cyjan,
+biały,
+oranż,
+winny,
+żółty,

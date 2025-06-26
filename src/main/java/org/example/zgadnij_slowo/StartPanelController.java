@@ -12,8 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,18 +21,12 @@ import java.util.ResourceBundle;
 
 public class StartPanelController implements Initializable {
 
-    @FXML
-    private ComboBox<String> difficultyComboBox;
-    @FXML
-    private Button startGameButton;
-    @FXML
-    private Button rulesButton;
-    @FXML
-    private Button highScoresButton;
-    @FXML
-    private Button exitButton;
-    @FXML
-    private ComboBox<String> categoryComboBox;
+    @FXML private ComboBox<String> difficultyComboBox;
+    @FXML private Button startGameButton;
+    @FXML private Button rulesButton;
+    @FXML private Button highScoresButton;
+    @FXML private Button exitButton;
+    @FXML private ComboBox<String> categoryComboBox;
     @FXML private TextField nickField;
 
     @Override
@@ -101,24 +93,25 @@ public class StartPanelController implements Initializable {
         );
         alert.showAndWait();
     }
-
     public void showHighScores() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Tabela wyników");
-        alert.setHeaderText("Najlepsze wyniki");
-        StringBuilder content = new StringBuilder();
-
         try (BufferedReader reader = new BufferedReader(new FileReader("scores.txt"))) {
+            StringBuilder scores = new StringBuilder("Najlepsze wyniki:\n");
             String line;
             while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
+                scores.append(line).append("\n");
             }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Najlepsze wyniki");
+            alert.setHeaderText(null);
+            alert.setContentText(scores.toString());
+            alert.showAndWait();
         } catch (IOException e) {
-            content.append("Brak zapisanych wyników");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Błąd");
+            alert.setHeaderText("Nie można odczytać pliku z wynikami");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
-
-        alert.setContentText(content.toString());
-        alert.showAndWait();
     }
     public String nickOfPlayer(){
         return nickField.getText().trim();

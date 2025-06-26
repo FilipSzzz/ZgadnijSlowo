@@ -13,12 +13,10 @@ public class ZgadnijSlowo extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/startPanel.fxml"));
         Parent root = loader.load();
         primaryStage.setScene(new Scene(root, 702.0, 658.0));
-
         primaryStage.setTitle("Zgadnij Słowo");
         primaryStage.setResizable(false);
         primaryStage.show();
     }
-
     public static void main(String[] args) {
         launch(args);
     }
