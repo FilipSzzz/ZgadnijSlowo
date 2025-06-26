@@ -12,14 +12,12 @@
 
 <VBox alignment="CENTER" prefHeight="702.0" prefWidth="658.0" spacing="20" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.zgadnij_slowo.StartPanelController">
 
-    <!-- Game Title -->
     <Label style="-fx-font-weight: bold;" text="ZGADNIJ SŁOWO">
         <font>
             <Font name="Arial Bold" size="48.0" />
         </font>
     </Label>
 
-    <!-- Main Menu Container -->
     <VBox fx:id="mainMenuContainer" alignment="CENTER" prefHeight="553.0" prefWidth="658.0" spacing="15" style="-fx-background-color: #e6e6e6; -fx-padding: 30; -fx-background-radius: 10;">
         <padding>
             <Insets bottom="20" left="40" right="40" top="20" />
@@ -32,7 +30,6 @@
             </font>
         </Label>
 
-        <!-- Difficulty Selection -->
         <HBox alignment="CENTER" spacing="15">
             <Label style="-fx-font-weight: bold;" text="Poziom trudności:">
                 <font>
@@ -57,7 +54,6 @@
          </children>
       </AnchorPane>
 
-        <!-- Category Selection -->
         <HBox alignment="CENTER" spacing="15">
             <Label style="-fx-font-weight: bold;" text="Kategoria słów:">
                 <font>
@@ -79,16 +75,12 @@
             </font>
         </Button>
 
-        <!-- Separator -->
         <Label prefHeight="18.0" prefWidth="330.0" style="-fx-border-color: #d3d3d3; -fx-border-width: 0 0 1 0;" />
 
-        <!-- Edit Mode Toggle -->
         <HBox alignment="CENTER" spacing="10" />
 
-        <!-- Draggable Buttons Container -->
         <VBox fx:id="draggableButtonsContainer" alignment="CENTER" spacing="10">
 
-            <!-- Other Options -->
             <Button fx:id="rulesButton" prefHeight="40" prefWidth="200" style="-fx-background-color: #c9b458; -fx-text-fill: white; -fx-background-radius: 5;" text="Zasady gry">
                 <font>
                     <Font name="Arial Bold" size="14.0" />
@@ -108,7 +100,6 @@
             </Button>
         </VBox>
 
-        <!-- Add New Button Section (visible only in edit mode) -->
         <HBox fx:id="addButtonSection" alignment="CENTER" spacing="10" visible="false">
             <Button fx:id="addNewButton" prefHeight="30" prefWidth="100" style="-fx-background-color: #538d4e; -fx-text-fill: white; -fx-background-radius: 5;" text="Dodaj przycisk">
                 <font>
